@@ -23,69 +23,88 @@
         android:weightSum="10">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="8">
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="5"
-                android:layout_marginBottom="15dp">
+                android:layout_marginBottom="15dp"
+                android:weightSum="5">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="24sp"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/tag"
-                    android:layout_marginEnd="5dp"/>
+                    android:textSize="24sp" />
 
                 <Spinner
                     android:id="@+id/tag_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scrollbarSize="24dp"/>
+                    android:scrollbarSize="24dp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="5"
-                android:layout_marginBottom="15dp">
+                android:layout_marginBottom="15dp"
+                android:weightSum="5">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="24sp"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/difficulty"
-                    android:layout_marginEnd="5dp"/>
+                    android:textSize="24sp" />
 
                 <Spinner
                     android:id="@+id/difficulty_spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="5"
-                android:layout_marginBottom="20dp">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:weightSum="5">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="24sp"
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/letter"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/letter_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:weightSum="5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/partype"
-                    android:layout_marginEnd="5dp"/>
+                    android:textSize="24sp" />
 
                 <Spinner
                     android:id="@+id/partype_spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
         </LinearLayout>
