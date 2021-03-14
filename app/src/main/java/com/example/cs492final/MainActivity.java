@@ -1,12 +1,24 @@
 package com.example.cs492final;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.cs492final.data.Versions;
+import com.example.cs492final.data.VersionsRepository;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private VersionsViewModel versionsViewModel;
+    private static final String LEAGUE_APPID = BuildConfig.LEAGUE_API_KEY;
+
+    String version;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,5 +42,20 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> partypeAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, R.id.tv_spinner, partypeArray);
         partypeAdapter.setDropDownViewResource(R.layout.spinner_item);
         partypeSpinner.setAdapter(partypeAdapter);
+
+        this.versionsViewModel = new ViewModelProvider(this).get(VersionsViewModel.class);
+        this.versionsViewModel.loadVersions(LEAGUE_APPID);
+
+        this.versionsViewModel.getPatchVersions().observe(
+                this,
+                new Observer<Versions>() {
+                    @Override
+                    public void onChanged(Versions versions) {
+                        if(versions != null) {
+                            version = versions.getLatestVersion();
+                            Log.d(TAG, version);
+                        }
+                    }
+                });
     }
 }
