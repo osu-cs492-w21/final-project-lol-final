@@ -25,12 +25,6 @@ public class MainActivity extends AppCompatActivity {
         difficultyAdapter.setDropDownViewResource(R.layout.spinner_item);
         difficultySpinner.setAdapter(difficultyAdapter);
 
-        String[] letterArray = getResources().getStringArray(R.array.letter_array);
-        Spinner letterSpinner = findViewById(R.id.letter_spinner);
-        ArrayAdapter<String> letterAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, R.id.tv_spinner, letterArray);
-        difficultyAdapter.setDropDownViewResource(R.layout.spinner_item);
-        letterSpinner.setAdapter(letterAdapter);
-
         String[] partypeArray = getResources().getStringArray(R.array.partype_array);
         Spinner partypeSpinner = findViewById(R.id.partype_spinner);
         ArrayAdapter<String> partypeAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, R.id.tv_spinner, partypeArray);
