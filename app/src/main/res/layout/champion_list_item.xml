@@ -19,8 +19,6 @@
             android:layout_height="47dp"
             android:text="Name"
             android:textAppearance="?attr/textAppearanceHeadline5"
-            app:layout_constraintBottom_toTopOf="+id/champion_stats"
-            app:layout_constraintEnd_toEndOf="+id/champion_stats"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
