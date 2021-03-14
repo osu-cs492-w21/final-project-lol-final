@@ -39,12 +39,12 @@ public class Champions implements Serializable {
             List<String> listKeySet = new ArrayList<>(keySet);
             ArrayList<Champion> champions = new ArrayList<>();
 
-            Log.d(TAG, "dataObj: " + String.valueOf(dataObj));
+            Log.d(TAG, "dataObj: " + dataObj);
             Log.d(TAG, "size: " + dataObj.size());
             for(String key : listKeySet) {
                 JsonObject champObj = dataObj.getAsJsonObject(key);
                 champions.add(new Champion(champObj));
-                Log.d(TAG, "Champobj: " + String.valueOf(champObj));
+                Log.d(TAG, "Champobj: " + champObj);
             }
             return new Champions(champions);
         }
