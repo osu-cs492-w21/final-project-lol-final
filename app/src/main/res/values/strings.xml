@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CS492Final</string>
+    <string name="title">League of Legends Champions Stats</string>
+    <string name="tag">Tag:</string>
+    <string name="difficulty">Difficulty:</string>
+    <string name="partype">Partype:</string>
+    <string name="search">Search</string>
 </resources>
