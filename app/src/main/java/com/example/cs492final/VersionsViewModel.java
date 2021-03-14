@@ -19,7 +19,7 @@ public class VersionsViewModel extends ViewModel {
         return this.patchVersions;
     }
 
-    public void loadVersions(String apiKey) {
-        this.repository.loadVersion(apiKey);
+    public void loadVersions() {
+        this.repository.loadVersion();
     }
 }

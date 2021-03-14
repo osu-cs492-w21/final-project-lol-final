@@ -14,20 +14,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class VersionsRepository {
-    private static final String TAG = VersionsRepository.class.getSimpleName();
-    private static final String BASE_URL = "https://ddragon.leagueoflegends.com/api/";
-
-    private MutableLiveData<Versions> patchVersions;
+public class ChampionsRepository {
+    private static final String TAG = ChampionsRepository.class.getSimpleName();
+    private static final String BASE_URL = "https://ddragon.leagueoflegends.com/";
 
     private LeagueService leagueService;
 
-    public VersionsRepository() {
-        this.patchVersions = new MutableLiveData<>();
-        this.patchVersions.setValue(null);
-
+    public ChampionsRepository() {
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Versions.class, new Versions.JsonDeserializer())
+                .registerTypeAdapter(Champions.class, new Champions.JsonDeserializer())
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -36,18 +31,13 @@ public class VersionsRepository {
         this.leagueService = retrofit.create(LeagueService.class);
     }
 
-    public LiveData<Versions> getPatchVersions() {
-        return this.patchVersions;
-    }
-    public void loadVersion() {
-        this.patchVersions.setValue(null);
-        Call<Versions> req = this.leagueService.fetchVersions();
-        req.enqueue(new Callback<Versions>() {
+    public void loadChampions(String version) {
+        Call<ChampionsData> req = this.leagueService.fetchChampions(version);
+        req.enqueue(new Callback<ChampionsData>() {
             @Override
-            public void onResponse(Call<Versions> call, Response<Versions> response) {
+            public void onResponse(Call<ChampionsData> call, Response<ChampionsData> response) {
                 if(response.code() == 200) {
-                    patchVersions.setValue(response.body());
-                    Log.d(TAG, "Success" + response.body());
+                    Log.d(TAG, "Success " + response.body().getData().getChampions().get(153).getName());
                 } else {
                     Log.d(TAG, "unsuccessful API request: " + call.request().url());
                     Log.d(TAG, "  -- response status code: " + response.code());
@@ -56,7 +46,7 @@ public class VersionsRepository {
             }
 
             @Override
-            public void onFailure(Call<Versions> call, Throwable t) {
+            public void onFailure(Call<ChampionsData> call, Throwable t) {
                 Log.d(TAG, "unsuccessful API request: " + call.request().url());
                 t.printStackTrace();
             }

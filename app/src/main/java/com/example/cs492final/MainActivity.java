@@ -2,7 +2,6 @@ package com.example.cs492final;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -10,15 +9,16 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.cs492final.data.ChampionsViewModel;
 import com.example.cs492final.data.Versions;
-import com.example.cs492final.data.VersionsRepository;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private VersionsViewModel versionsViewModel;
-    private static final String LEAGUE_APPID = BuildConfig.LEAGUE_API_KEY;
+    private ChampionsViewModel championsViewModel;
+//    private static final String LEAGUE_API_KEY = BuildConfig.LEAGUE_API_KEY;
 
-    String version;
+    String version = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
         partypeSpinner.setAdapter(partypeAdapter);
 
         this.versionsViewModel = new ViewModelProvider(this).get(VersionsViewModel.class);
-        this.versionsViewModel.loadVersions(LEAGUE_APPID);
+        this.versionsViewModel.loadVersions();
+
+        this.championsViewModel = new ViewModelProvider(this).get(ChampionsViewModel.class);
 
         this.versionsViewModel.getPatchVersions().observe(
                 this,
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onChanged(Versions versions) {
                         if(versions != null) {
                             version = versions.getLatestVersion();
+                            championsViewModel.loadChampions(version);
+
                             Log.d(TAG, version);
                         }
                     }
