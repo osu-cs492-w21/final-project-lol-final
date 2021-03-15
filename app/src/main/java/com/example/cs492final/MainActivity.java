@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     @Override
                     public void onChanged(ChampionsData championsData) {
                         if(championsData != null) {
+                            Log.d(TAG, "insert to database");
                             ChampionsData champsData = championsData;
                             Champions champions = champsData.getData();
                             for(Champion champion : champions.getChampions()) {
@@ -113,9 +114,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     public void onChanged(List<Champion> champions) {
                         Champions champs = new Champions(champions);
                         realChampions = champs.toChampWithTags();
-//                        for(ChampionWTags i : realChampions) {
-//                            Log.d(TAG, i.getName());
-//                        }
                     }
                 }
         );
@@ -141,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals(getString(R.string.pref_version_key))) {
+            Log.d(TAG, "load new version");
             String version = sharedPreferences.getString(key, "0");
             championsViewModel.loadChampions(version);
         }
