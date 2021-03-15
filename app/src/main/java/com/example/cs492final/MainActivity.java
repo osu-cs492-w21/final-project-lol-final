@@ -1,11 +1,18 @@
 package com.example.cs492final;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -18,15 +25,16 @@ import com.example.cs492final.data.Versions;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private VersionsViewModel versionsViewModel;
     private ChampionsViewModel championsViewModel;
     private DbChampionViewModel dbChampionViewModel;
 
-    String version = null;
-
     private List<ChampionWTags> realChampions;
+
+    private SharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         partypeAdapter.setDropDownViewResource(R.layout.spinner_item);
         partypeSpinner.setAdapter(partypeAdapter);
 
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
         this.versionsViewModel = new ViewModelProvider(this).get(VersionsViewModel.class);
         this.versionsViewModel.loadVersions();
 
@@ -67,10 +78,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onChanged(Versions versions) {
                         if(versions != null) {
-                            version = versions.getLatestVersion();
-                            championsViewModel.loadChampions(version);
-
-                            Log.d(TAG, version);
+                            String version = versions.getLatestVersion();
+                            String currVersion = sharedPreferences.getString(getString(R.string.pref_version_key), "0");
+                            if(!version.equals(currVersion)) {
+                                Log.d(TAG, "Change preference");
+                                SharedPreferences.Editor edit = sharedPreferences.edit();
+                                edit.putString(getString(R.string.pref_version_key), version);
+                                edit.apply();
+                            }
                         }
                     }
                 });
@@ -86,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
                             for(Champion champion : champions.getChampions()) {
                                 dbChampionViewModel.insertChampion(champion);
                             }
-                            champsData.printNames();
                         }
                     }
                 }
@@ -99,11 +113,36 @@ public class MainActivity extends AppCompatActivity {
                     public void onChanged(List<Champion> champions) {
                         Champions champs = new Champions(champions);
                         realChampions = champs.toChampWithTags();
-                        for(ChampionWTags i : realChampions) {
-                            Log.d(TAG, i.getName());
-                        }
+//                        for(ChampionWTags i : realChampions) {
+//                            Log.d(TAG, i.getName());
+//                        }
                     }
                 }
         );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(getString(R.string.pref_version_key))) {
+            String version = sharedPreferences.getString(key, "0");
+            championsViewModel.loadChampions(version);
+        }
     }
 }
