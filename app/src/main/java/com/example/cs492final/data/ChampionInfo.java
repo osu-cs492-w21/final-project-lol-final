@@ -1,5 +1,7 @@
 package com.example.cs492final.data;
 
+import androidx.room.Ignore;
+
 import com.google.gson.JsonObject;
 
 public class ChampionInfo {
@@ -8,6 +10,7 @@ public class ChampionInfo {
     private int magic;
     private int difficulty;
 
+    @Ignore
     public ChampionInfo() {
         this.attack = 0;
         this.defense = 0;
@@ -22,6 +25,7 @@ public class ChampionInfo {
         this.difficulty = difficulty;
     }
 
+    @Ignore
     public ChampionInfo(JsonObject json) {
         this.attack = json.getAsJsonPrimitive("attack").getAsInt();
         this.defense = json.getAsJsonPrimitive("defense").getAsInt();
@@ -43,5 +47,21 @@ public class ChampionInfo {
 
     public int getDifficulty() {
         return difficulty;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
+    public void setMagic(int magic) {
+        this.magic = magic;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 }

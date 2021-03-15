@@ -3,53 +3,50 @@ package com.example.cs492final.data;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.google.gson.JsonObject;
 
-@Entity(primaryKeys = {"name","tag"}, tableName = "champions")
-public class Champion {
-    @NonNull
+import java.util.ArrayList;
+
+public class ChampionWTags {
     private String name;
     private String title;
     private String blurb;
-    @Embedded
     private ChampionInfo info;
-    @NonNull
-    private String tag;
+    private ArrayList<String> tags;
     private String partype;
-    @Embedded
     private ChampionStats stats;
 
-    public Champion() {
+    public ChampionWTags() {
         this.name = null;
         this.title = null;
         this.blurb = null;
         this.info = null;
-        this.tag = null;
+        this.tags = null;
         this.partype = null;
         this.stats = null;
     }
 
-    public Champion(String name, String title, String blurb, ChampionInfo info, String tag,
+    public ChampionWTags(Champion champion) {
+        this.name = champion.getName();
+        this.title = champion.getTitle();
+        this.blurb = champion.getBlurb();
+        this.info = champion.getInfo();
+        this.tags = new ArrayList<>();
+        this.tags.add(champion.getTag());
+        this.partype = champion.getPartype();
+        this.stats = champion.getStats();
+    }
+
+    public ChampionWTags(String name, String title, String blurb, ChampionInfo info, ArrayList<String> tags,
                     String partype, ChampionStats stats) {
         this.name = name;
         this.title = title;
         this.blurb = blurb;
         this.info = info;
-        this.tag = tag;
+        this.tags = tags;
         this.partype = partype;
         this.stats = stats;
-    }
-
-    public Champion(JsonObject json, String tag) {
-        this.name = json.getAsJsonPrimitive("name").getAsString();
-        this.title = json.getAsJsonPrimitive("title").getAsString();
-        this.blurb = json.getAsJsonPrimitive("blurb").getAsString();
-        this.info = new ChampionInfo(json.getAsJsonObject("info"));
-        this.tag = tag;
-        this.partype = json.getAsJsonPrimitive("partype").getAsString();
-        this.stats = new ChampionStats(json.getAsJsonObject("stats"));
     }
 
     public String getName() {
@@ -68,8 +65,8 @@ public class Champion {
         return info;
     }
 
-    public String getTag() {
-        return tag;
+    public ArrayList<String> getTags() {
+        return tags;
     }
 
     public String getPartype() {
@@ -96,8 +93,8 @@ public class Champion {
         this.info = info;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
     }
 
     public void setPartype(String partype) {
@@ -106,5 +103,9 @@ public class Champion {
 
     public void setStats(ChampionStats stats) {
         this.stats = stats;
+    }
+
+    public void addTag(String tag) {
+        this.tags.add(tag);
     }
 }

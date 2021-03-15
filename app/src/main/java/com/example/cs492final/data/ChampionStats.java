@@ -1,5 +1,7 @@
 package com.example.cs492final.data;
 
+import androidx.room.Ignore;
+
 import com.google.gson.JsonObject;
 
 public class ChampionStats {
@@ -24,6 +26,7 @@ public class ChampionStats {
     private double attackspeedperlevel;
     private double attackspeed;
 
+    @Ignore
     public ChampionStats() {
         this.hp = 0;
         this.hpperlevel = 0;
@@ -74,6 +77,7 @@ public class ChampionStats {
          this.attackspeed = attackspeed;
     }
 
+    @Ignore
     public ChampionStats(JsonObject json) {
         this.hp = json.getAsJsonPrimitive("hp").getAsInt();
         this.hpperlevel = json.getAsJsonPrimitive("hpperlevel").getAsDouble();
@@ -175,5 +179,85 @@ public class ChampionStats {
 
     public double getAttackspeed() {
         return attackspeed;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public void setHpperlevel(double hpperlevel) {
+        this.hpperlevel = hpperlevel;
+    }
+
+    public void setArmor(double armor) {
+        this.armor = armor;
+    }
+
+    public void setArmorperlevel(double armorperlevel) {
+        this.armorperlevel = armorperlevel;
+    }
+
+    public void setAttackdamage(double attackdamage) {
+        this.attackdamage = attackdamage;
+    }
+
+    public void setAttackdamageperlevel(double attackdamageperlevel) {
+        this.attackdamageperlevel = attackdamageperlevel;
+    }
+
+    public void setAttackrange(int attackrange) {
+        this.attackrange = attackrange;
+    }
+
+    public void setAttackspeed(double attackspeed) {
+        this.attackspeed = attackspeed;
+    }
+
+    public void setAttackspeedperlevel(double attackspeedperlevel) {
+        this.attackspeedperlevel = attackspeedperlevel;
+    }
+
+    public void setCrit(int crit) {
+        this.crit = crit;
+    }
+
+    public void setCritperlevel(int critperlevel) {
+        this.critperlevel = critperlevel;
+    }
+
+    public void setHpregen(double hpregen) {
+        this.hpregen = hpregen;
+    }
+
+    public void setHpregenperlevel(double hpregenperlevel) {
+        this.hpregenperlevel = hpregenperlevel;
+    }
+
+    public void setMovespeed(int movespeed) {
+        this.movespeed = movespeed;
+    }
+
+    public void setMp(double mp) {
+        this.mp = mp;
+    }
+
+    public void setMpperlevel(double mpperlevel) {
+        this.mpperlevel = mpperlevel;
+    }
+
+    public void setMpregen(double mpregen) {
+        this.mpregen = mpregen;
+    }
+
+    public void setMpregenperlevel(double mpregenperlevel) {
+        this.mpregenperlevel = mpregenperlevel;
+    }
+
+    public void setSpellblock(double spellblock) {
+        this.spellblock = spellblock;
+    }
+
+    public void setSpellblockperlevel(double spellblockperlevel) {
+        this.spellblockperlevel = spellblockperlevel;
     }
 }
