@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.room.Room;
+import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.Tag;
@@ -21,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.cs492final.data.AppDatabase;
 import com.example.cs492final.data.Champion;
 import com.example.cs492final.data.ChampionWTags;
 import com.example.cs492final.data.Champions;
@@ -29,6 +32,7 @@ import com.example.cs492final.data.ChampionsViewModel;
 import com.example.cs492final.data.Versions;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private List<ChampionWTags> realChampions;
 
     private SharedPreferences sharedPreferences;
+    private View recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +69,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         partypeAdapter.setDropDownViewResource(R.layout.spinner_item);
         partypeSpinner.setAdapter(partypeAdapter);
 
-
+        this.recyclerView = findViewById(R.id.champion_recycle);
+        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.championAdapter = new ChampionAdapter(this, champion_recycle);
+        this.recyclerView.setAdapter(this.champion_recycle);
+        ChampionDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "champions.db").allowMainThreadQueries().build();
+        this.championAdapter.updateCityData(new ArrayList<>(db.ChampionDao().getAll()));
+        this.championAdapter.notifyDataSetChanged();
 
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
