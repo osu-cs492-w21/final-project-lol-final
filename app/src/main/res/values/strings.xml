@@ -7,6 +7,11 @@
     <string name="search">Search</string>
 
     <string name="action_settings_title">Settings</string>
+    <string name="champion_name">Champion name:</string>
+    <string name="champion_title">Title:</string>
+    <string name="champion_tag">Tag:</string>
+    <string name="champion_Image">Image</string>
+
 
     <!-- Strings for units preference -->
     <string name="pref_version_key" translatable="false">pref_version</string>
