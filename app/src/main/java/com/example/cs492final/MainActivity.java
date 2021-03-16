@@ -1,24 +1,40 @@
 package com.example.cs492final;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.cs492final.data.Champion;
+import com.example.cs492final.data.ChampionWTags;
+import com.example.cs492final.data.Champions;
+import com.example.cs492final.data.ChampionsData;
 import com.example.cs492final.data.ChampionsViewModel;
 import com.example.cs492final.data.Versions;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private VersionsViewModel versionsViewModel;
     private ChampionsViewModel championsViewModel;
-//    private static final String LEAGUE_API_KEY = BuildConfig.LEAGUE_API_KEY;
+    private DbChampionViewModel dbChampionViewModel;
 
-    String version = null;
+    private List<ChampionWTags> realChampions;
+
+    private SharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +59,18 @@ public class MainActivity extends AppCompatActivity {
         partypeAdapter.setDropDownViewResource(R.layout.spinner_item);
         partypeSpinner.setAdapter(partypeAdapter);
 
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
         this.versionsViewModel = new ViewModelProvider(this).get(VersionsViewModel.class);
         this.versionsViewModel.loadVersions();
 
         this.championsViewModel = new ViewModelProvider(this).get(ChampionsViewModel.class);
+
+        this.dbChampionViewModel = new ViewModelProvider(
+                this,
+                new ViewModelProvider.AndroidViewModelFactory(getApplication())
+        ).get(DbChampionViewModel.class);
 
         this.versionsViewModel.getPatchVersions().observe(
                 this,
@@ -54,12 +78,70 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onChanged(Versions versions) {
                         if(versions != null) {
-                            version = versions.getLatestVersion();
-                            championsViewModel.loadChampions(version);
-
-                            Log.d(TAG, version);
+                            String version = versions.getLatestVersion();
+                            String currVersion = sharedPreferences.getString(getString(R.string.pref_version_key), "0");
+                            if(!version.equals(currVersion)) {
+                                Log.d(TAG, "Change preference");
+                                SharedPreferences.Editor edit = sharedPreferences.edit();
+                                edit.putString(getString(R.string.pref_version_key), version);
+                                edit.apply();
+                            }
                         }
                     }
                 });
+
+        this.championsViewModel.getChampionsData().observe(
+                this,
+                new Observer<ChampionsData>() {
+                    @Override
+                    public void onChanged(ChampionsData championsData) {
+                        if(championsData != null) {
+                            Log.d(TAG, "insert to database");
+                            ChampionsData champsData = championsData;
+                            Champions champions = champsData.getData();
+                            for(Champion champion : champions.getChampions()) {
+                                dbChampionViewModel.insertChampion(champion);
+                            }
+                        }
+                    }
+                }
+        );
+
+        this.dbChampionViewModel.getAllChampionsAsc("name").observe(
+                this,
+                new Observer<List<Champion>>() {
+                    @Override
+                    public void onChanged(List<Champion> champions) {
+                        Champions champs = new Champions(champions);
+                        realChampions = champs.toChampWithTags();
+                    }
+                }
+        );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(getString(R.string.pref_version_key))) {
+            Log.d(TAG, "load new version");
+            String version = sharedPreferences.getString(key, "0");
+            championsViewModel.loadChampions(version);
+        }
     }
 }

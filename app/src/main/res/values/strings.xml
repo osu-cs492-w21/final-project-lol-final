@@ -5,4 +5,10 @@
     <string name="difficulty">Difficulty:</string>
     <string name="partype">Partype:</string>
     <string name="search">Search</string>
+
+    <string name="action_settings_title">Settings</string>
+
+    <!-- Strings for units preference -->
+    <string name="pref_version_key" translatable="false">pref_version</string>
+    <string name="pref_version_title">Patch</string>
 </resources>

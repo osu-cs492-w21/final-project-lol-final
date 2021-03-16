@@ -19,8 +19,11 @@ public class ChampionsRepository {
     private static final String BASE_URL = "https://ddragon.leagueoflegends.com/";
 
     private LeagueService leagueService;
+    private MutableLiveData<ChampionsData> championsData;
 
     public ChampionsRepository() {
+        championsData = new MutableLiveData<>();
+        championsData.setValue(null);
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Champions.class, new Champions.JsonDeserializer())
                 .create();
@@ -31,12 +34,17 @@ public class ChampionsRepository {
         this.leagueService = retrofit.create(LeagueService.class);
     }
 
+    public LiveData<ChampionsData> getChampionsData() {
+        return this.championsData;
+    }
+
     public void loadChampions(String version) {
         Call<ChampionsData> req = this.leagueService.fetchChampions(version);
         req.enqueue(new Callback<ChampionsData>() {
             @Override
             public void onResponse(Call<ChampionsData> call, Response<ChampionsData> response) {
                 if(response.code() == 200) {
+                    championsData.setValue(response.body());
                     Log.d(TAG, "Success " + response.body().getData().getChampions().get(153).getName());
                 } else {
                     Log.d(TAG, "unsuccessful API request: " + call.request().url());

@@ -16,19 +16,44 @@ import java.util.Set;
 
 public class Champions implements Serializable {
     private static final String TAG = Champions.class.getSimpleName();
-    private ArrayList<Champion> champions;
+    private List<Champion> champions;
 
     public Champions() {
         this.champions = null;
     }
 
-    public Champions(ArrayList<Champion> champions) {
+    public Champions(List<Champion> champions) {
         this.champions = champions;
     }
 
-
-    public ArrayList<Champion> getChampions() {
+    public List<Champion> getChampions() {
         return champions;
+    }
+
+    public void printNames() {
+        for(Champion champion : champions) {
+            Log.d(TAG, champion.getName());
+        }
+    }
+
+    public List<ChampionWTags> toChampWithTags() {
+        List<ChampionWTags> withTags = new ArrayList<>();
+        ChampionWTags championWTags = null;
+        String previousName = null;
+        for(Champion champion : this.champions) {
+            if(champion.getName().equals(previousName)) {
+                championWTags.addTag(champion.getTag());
+            } else {
+                if(championWTags != null) {
+                    withTags.add(championWTags);
+                }
+                championWTags = new ChampionWTags(champion);
+                championWTags.addTag(champion.getTag());
+            }
+            previousName = champion.getName();
+        }
+        withTags.add(championWTags);
+        return withTags;
     }
 
     public static class JsonDeserializer implements com.google.gson.JsonDeserializer<Champions> {
@@ -37,14 +62,17 @@ public class Champions implements Serializable {
             JsonObject dataObj = json.getAsJsonObject();
             Set<String> keySet = dataObj.keySet();
             List<String> listKeySet = new ArrayList<>(keySet);
-            ArrayList<Champion> champions = new ArrayList<>();
+            List<Champion> champions = new ArrayList<>();
 
             Log.d(TAG, "dataObj: " + dataObj);
             Log.d(TAG, "size: " + dataObj.size());
             for(String key : listKeySet) {
                 JsonObject champObj = dataObj.getAsJsonObject(key);
-                champions.add(new Champion(champObj));
-                Log.d(TAG, "Champobj: " + champObj);
+                JsonArray tags = champObj.getAsJsonArray("tags");
+                for(int i = 0; i < tags.size(); i++) {
+                    champions.add(new Champion(champObj, tags.get(i).getAsString()));
+                    Log.d(TAG, "Champobj: " + champObj);
+                }
             }
             return new Champions(champions);
         }

@@ -18,6 +18,8 @@ public class ChampionsData {
         return data;
     }
 
+    public void printNames() { this.data.printNames(); }
+
     public String printChampName(int i) {
         return data.getChampions().get(i).getName();
     }
