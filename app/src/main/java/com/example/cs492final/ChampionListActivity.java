@@ -3,9 +3,12 @@ package com.example.cs492final;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.cs492final.data.Champion;
@@ -24,7 +27,10 @@ public class ChampionListActivity extends AppCompatActivity {
     private String tag;
     private String difficulty;
     private String partype;
-    private String orderBy = "attackdamage"; // Add Sort by option to preference and make this string reflect that value instead of hard coding
+    private String orderBy; // Add Sort by option to preference and make this string reflect that value instead of hard coding
+
+
+
     private List<ChampionWTags> championsData;
 
     private DbChampionViewModel dbChampionViewModel;
@@ -33,6 +39,14 @@ public class ChampionListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_champion_list);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        orderBy=preferences.getString(
+                getString(R.string.pref_ordered_by_key),
+                getString(R.string.pref_ordered_default)
+        );
+        Log.d("ordered by is", orderBy);
+
 
         Intent intent = getIntent();
 
@@ -45,11 +59,14 @@ public class ChampionListActivity extends AppCompatActivity {
             this.tag = intent.getStringExtra(EXTRA_TAG_TEXT);
             this.difficulty = intent.getStringExtra(EXTRA_DIFFICULTY_TEXT);
             this.partype = intent.getStringExtra(EXTRA_PARTYPE_TEXT);
-            getChampionsData();
+            getChampionsData(orderBy);
         }
+
+
+
     }
 
-    private void getChampionsData() {
+    private void getChampionsData(String orderBy) {
         if(!this.tag.equals("All") && this.difficulty.equals("All") && this.partype.equals("All")) {
             getChampionsByTag(this.tag, orderBy);
         } else if(this.tag.equals("All") && !this.difficulty.equals("All") && this.partype.equals("All")) {
@@ -72,7 +89,7 @@ public class ChampionListActivity extends AppCompatActivity {
     private void printChampsWithTags() {
         for(ChampionWTags champion : championsData) {
             if(champion!=null) {
-                Log.d(TAG, champion.getName() + " " + champion.getTags());
+                Log.d("Champs are", champion.getName() + " " + champion.getTags());
             }
         }
     }
@@ -188,4 +205,7 @@ public class ChampionListActivity extends AppCompatActivity {
                 }
         );
     }
+
+
+
 }
