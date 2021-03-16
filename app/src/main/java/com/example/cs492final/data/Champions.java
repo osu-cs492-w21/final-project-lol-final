@@ -48,7 +48,6 @@ public class Champions implements Serializable {
                     withTags.add(championWTags);
                 }
                 championWTags = new ChampionWTags(champion);
-                championWTags.addTag(champion.getTag());
             }
             previousName = champion.getName();
         }

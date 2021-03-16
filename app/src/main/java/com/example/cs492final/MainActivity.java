@@ -112,23 +112,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
         );
 
-        this.dbChampionViewModel.getAllChampionsAsc("name").observe(
-                this,
-                new Observer<List<Champion>>() {
-                    @Override
-                    public void onChanged(List<Champion> champions) {
-                        Champions champs = new Champions(champions);
-                        realChampions = champs.toChampWithTags();
-                    }
-                }
-        );
-
         Button searchButton = (Button)findViewById(R.id.btn_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String tagText = tagSpinner.getSelectedItem().toString();
+                String difficultyText = difficultySpinner.getSelectedItem().toString();
+                String partypeText = partypeSpinner.getSelectedItem().toString();
                 Intent intent = new Intent(getApplicationContext(), ChampionListActivity.class);
-                intent.putExtra(ChampionListActivity.EXTRA_CHAMPIONS_DATA, (Serializable) realChampions);
+                intent.putExtra(ChampionListActivity.EXTRA_TAG_TEXT, tagText);
+                intent.putExtra(ChampionListActivity.EXTRA_DIFFICULTY_TEXT, difficultyText);
+                intent.putExtra(ChampionListActivity.EXTRA_PARTYPE_TEXT, partypeText);
                 startActivity(intent);
             }
         });
