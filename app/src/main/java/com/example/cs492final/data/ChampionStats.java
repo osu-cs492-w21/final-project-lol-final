@@ -4,7 +4,9 @@ import androidx.room.Ignore;
 
 import com.google.gson.JsonObject;
 
-public class ChampionStats {
+import java.io.Serializable;
+
+public class ChampionStats implements Serializable {
     private int hp;
     private double hpperlevel;
     private double mp;
