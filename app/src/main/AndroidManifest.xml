@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CS492Final">
-        <activity android:name=".Champ_detail_activity"></activity>
+        <activity android:name=".ChampDetailActivity"></activity>
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />
