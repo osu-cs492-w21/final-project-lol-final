@@ -4,7 +4,9 @@ import androidx.room.Ignore;
 
 import com.google.gson.JsonObject;
 
-public class ChampionInfo {
+import java.io.Serializable;
+
+public class ChampionInfo implements Serializable {
     private int attack;
     private int defense;
     private int magic;

@@ -10,10 +10,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.cs492final.data.Champion;
@@ -23,6 +28,7 @@ import com.example.cs492final.data.ChampionsData;
 import com.example.cs492final.data.ChampionsViewModel;
 import com.example.cs492final.data.Versions;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -34,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private List<ChampionWTags> realChampions;
 
     private SharedPreferences sharedPreferences;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +122,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     }
                 }
         );
+
+        Button searchButton = (Button)findViewById(R.id.btn_search);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ChampionListActivity.class);
+                intent.putExtra(ChampionListActivity.EXTRA_CHAMPIONS_DATA, (Serializable) realChampions);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
