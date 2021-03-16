@@ -3,18 +3,23 @@ package com.example.cs492final;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.room.Room;
+import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.example.cs492final.data.Champion;
+import com.example.cs492final.data.AppDatabase;
 import com.example.cs492final.data.ChampionWTags;
 import com.example.cs492final.data.Champions;
 
 import java.util.List;
 
-public class ChampionListActivity extends AppCompatActivity {
+public class ChampionListActivity extends AppCompatActivity implements List<ChampionWTags> {
     private static final String TAG = ChampionListActivity.class.getSimpleName();
     public static final String EXTRA_TAG_TEXT = "ChampionListActivity.Tag";
     public static final String EXTRA_DIFFICULTY_TEXT = "ChampionListActivity.Difficulty";
@@ -26,9 +31,10 @@ public class ChampionListActivity extends AppCompatActivity {
     private String partype;
     private String orderBy = "attackdamage"; // Add Sort by option to preference and make this string reflect that value instead of hard coding
     private List<ChampionWTags> championsData;
-
     private DbChampionViewModel dbChampionViewModel;
 
+    private RecyclerView recyclerView;
+    private ChampionAdapter championAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +81,14 @@ public class ChampionListActivity extends AppCompatActivity {
                 Log.d(TAG, champion.getName() + " " + champion.getTags());
             }
         }
+        this.recyclerView = findViewById(R.id.champion_recycle);
+        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.championAdapter = new ChampionAdapter(this);
+        this.recyclerView.setAdapter(this.championAdapter);
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "champions.db").allowMainThreadQueries().build();
+        this.championAdapter.updateChampionData(new List<>(db.championDao().getAll()));
+        this.championAdapter.notifyDataSetChanged();
     }
 
     private void getAllChampionsOrderBy(String column) {

@@ -2,10 +2,13 @@ package com.example.cs492final;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.room.Room;
+import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.Tag;
@@ -19,8 +22,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import com.example.cs492final.data.AppDatabase;
 import com.example.cs492final.data.Champion;
 import com.example.cs492final.data.ChampionWTags;
 import com.example.cs492final.data.Champions;
@@ -29,6 +34,7 @@ import com.example.cs492final.data.ChampionsViewModel;
 import com.example.cs492final.data.Versions;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -40,11 +46,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private List<ChampionWTags> realChampions;
 
     private SharedPreferences sharedPreferences;
+    private View recyclerView;
+    private ChampionAdapter championAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //get ItemLayout
+        LinearLayout linearLayout = findViewById(R.id.item_layout);
 
         String[] tagArray = getResources().getStringArray(R.array.tag_array);
         Spinner tagSpinner = findViewById(R.id.tag_spinner);
@@ -63,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         ArrayAdapter<String> partypeAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, R.id.tv_spinner, partypeArray);
         partypeAdapter.setDropDownViewResource(R.layout.spinner_item);
         partypeSpinner.setAdapter(partypeAdapter);
+
+
 
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
@@ -83,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     @Override
                     public void onChanged(Versions versions) {
                         if(versions != null) {
-                            String version = versions.getLatestVersion();
+                            String version = "11.4.1";
                             String currVersion = sharedPreferences.getString(getString(R.string.pref_version_key), "0");
                             if(!version.equals(currVersion)) {
                                 Log.d(TAG, "Change preference");
