@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         partypeAdapter.setDropDownViewResource(R.layout.spinner_item);
         partypeSpinner.setAdapter(partypeAdapter);
 
+
+
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
