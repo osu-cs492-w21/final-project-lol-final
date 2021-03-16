@@ -5,6 +5,8 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RawQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
@@ -13,11 +15,27 @@ public interface ChampionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Champion champion);
 
-    @Query("SELECT * FROM champions ORDER BY :sortBy ASC")
-    LiveData<List<Champion>> getAllChampionsAsc(String sortBy);
+    @RawQuery(observedEntities = Champion.class)
+    LiveData<List<Champion>> getAllChampionsOrderBy(SupportSQLiteQuery query);
 
-    @Query("SELECT * FROM champions ORDER BY :sortBy DESC")
-    LiveData<List<Champion>> getAllChampionsDesc(String sortBy);
+    @RawQuery(observedEntities = Champion.class)
+    LiveData<List<Champion>> getChampionsByTag(SupportSQLiteQuery query);
 
-    Object getAll();
+    @RawQuery(observedEntities = Champion.class)
+    LiveData<List<Champion>> getChampionsByDifficulty(SupportSQLiteQuery query);
+
+    @RawQuery(observedEntities = Champion.class)
+    LiveData<List<Champion>> getChampionsByPartype(SupportSQLiteQuery query);
+
+    @RawQuery(observedEntities = Champion.class)
+    LiveData<List<Champion>> getChampionsByTagDifficulty(SupportSQLiteQuery query);
+
+    @RawQuery(observedEntities = Champion.class)
+    LiveData<List<Champion>> getChampionsByTagPartype(SupportSQLiteQuery query);
+
+    @RawQuery(observedEntities = Champion.class)
+    LiveData<List<Champion>> getChampionsByDifficultyPartype(SupportSQLiteQuery query);
+
+    @RawQuery(observedEntities = Champion.class)
+    LiveData<List<Champion>> getChampionsByAllQuery(SupportSQLiteQuery query);
 }
