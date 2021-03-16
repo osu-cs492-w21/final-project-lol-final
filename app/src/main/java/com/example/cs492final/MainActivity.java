@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     @Override
                     public void onChanged(Versions versions) {
                         if(versions != null) {
-                            String version = versions.getLatestVersion();
+                            String version = "11.4.1";
                             String currVersion = sharedPreferences.getString(getString(R.string.pref_version_key), "0");
                             if(!version.equals(currVersion)) {
                                 Log.d(TAG, "Change preference");
