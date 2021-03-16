@@ -67,7 +67,7 @@ public class ChampDetailActivity extends AppCompatActivity {
             statMPRegenTV.setText("MP Regen: " + stats.getMpregen() + " (+" + stats.getMpregenperlevel() + ")");
             statMoveSpeedTV.setText("Move Speed: " + stats.getMovespeed());
             statArmorTV.setText("Armor: " + stats.getArmor() + " (+" + stats.getArmorperlevel() + ")");
-            statSpellBlockTV.setText("Spellblock: " + stats.getSpellblock() + " (+" + stats.getSpellblockperlevel());
+            statSpellBlockTV.setText("Spellblock: " + stats.getSpellblock() + " (+" + stats.getSpellblockperlevel() + ")");
             statCritTV.setText("Crit: " + stats.getCrit());
             statAttackDamageTV.setText("Attack Damage: " + stats.getAttackdamage() + " (+" + stats.getAttackdamageperlevel() + ")");
             statAttackSpeedTV.setText("Attack Speed: " + stats.getAttackspeed() + " (+" + stats.getAttackdamageperlevel() + ")");
@@ -79,14 +79,14 @@ public class ChampDetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "click!");
-//                    if (infoToast != null)
-//                        infoToast.cancel();
-//                    infoToast = Toast.makeText(
-//                            this,
-//                            "The (+X) is the amount the stat increases per level",
-//                            Toast.LENGTH_LONG
-//                    );
-//                    infoToast.show();
+                    if (infoToast != null)
+                        infoToast.cancel();
+                    infoToast = Toast.makeText(
+                            getBaseContext(),
+                            "The (+X) is the amount the stat increases per level",
+                            Toast.LENGTH_LONG
+                    );
+                    infoToast.show();
                 }
             });
         }
