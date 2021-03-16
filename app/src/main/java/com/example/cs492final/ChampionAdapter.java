@@ -29,7 +29,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             champion_name=itemView.findViewById(R.id.champion_name);
-            champion_title=(itemView.findViewById(R.id.champion_title);
+            champion_title=itemView.findViewById(R.id.champion_title);
             champion_tag=itemView.findViewById(R.id.champion_tag);
 
         }
@@ -49,9 +49,9 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ChampionAdapter.ViewHolder holder, int position) {
         ChampionWTags championWTags = championData.get(position);
-        holder.champion_name.setText(ChampionWTags.getName());
-        holder.champion_title.setText(ChampionWTags.getTitle());
-        holder.champion_tag.setText(ChampionWTags.getTags());
+        holder.champion_name.setText(championWTags.getName());
+        holder.champion_title.setText(championWTags.getTitle());
+        holder.champion_tag.setText(championWTags.getTags());
     }
     public void updateChampionData(List<ChampionWTags> championWTags) {
         // sort data
