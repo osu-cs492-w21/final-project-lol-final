@@ -205,7 +205,7 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
     @Override
     public void onChampionClick(ChampionWTags champion) {
         Intent intent = new Intent(this, ChampDetailActivity.class);
-        // Make sure to put extra before start activity
+        intent.putExtra(ChampDetailActivity.EXTRA_CHAMPION_DATA, champion);
         startActivity(intent);
     }
 }
