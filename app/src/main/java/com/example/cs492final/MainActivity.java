@@ -22,8 +22,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
-import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.example.cs492final.data.AppDatabase;
 import com.example.cs492final.data.Champion;
 import com.example.cs492final.data.ChampionWTags;
@@ -47,14 +48,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private SharedPreferences sharedPreferences;
     private View recyclerView;
     private ChampionAdapter championAdapter;
-    private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //get ItemLayout
-        DrawerLayout drawerLayout = findViewById(R.id.item_layout);
+        LinearLayout linearLayout = findViewById(R.id.item_layout);
 
         String[] tagArray = getResources().getStringArray(R.array.tag_array);
         Spinner tagSpinner = findViewById(R.id.tag_spinner);
@@ -74,14 +75,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         partypeAdapter.setDropDownViewResource(R.layout.spinner_item);
         partypeSpinner.setAdapter(partypeAdapter);
 
-        this.recyclerView = findViewById(R.id.champion_recycle);
-        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        this.championAdapter = new ChampionAdapter(this, item_layout);
-        this.recyclerView.setAdapter(this.champion_recycle);
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "champions.db").allowMainThreadQueries().build();
-        this.championAdapter.updateChampionData(new List<>(db.championDao().getAll()));
-        this.championAdapter.notifyDataSetChanged();
+
 
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
