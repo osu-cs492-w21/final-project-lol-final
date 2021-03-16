@@ -15,7 +15,7 @@ import com.example.cs492final.data.ChampionWTags;
 
 import java.util.List;
 
-public class ChampionListActivity extends AppCompatActivity {
+public class ChampionListActivity extends AppCompatActivity implements List<ChampionWTags> {
     private static final String TAG = ChampionListActivity.class.getSimpleName();
     public static final String EXTRA_CHAMPIONS_DATA = "ChampionListActivity.Champions";
 
@@ -37,7 +37,7 @@ public class ChampionListActivity extends AppCompatActivity {
         }
         this.recyclerView = findViewById(R.id.champion_recycle);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        this.championAdapter = new ChampionAdapter(this, linearLayout);
+        this.championAdapter = new ChampionAdapter(this);
         this.recyclerView.setAdapter(this.championAdapter);
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "champions.db").allowMainThreadQueries().build();
