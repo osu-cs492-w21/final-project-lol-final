@@ -60,7 +60,7 @@ public class ChampionWTags implements Serializable {
         return info;
     }
 
-    public int getTags() {
+    public ArrayList<String> getTags() {
         return tags;
     }
 

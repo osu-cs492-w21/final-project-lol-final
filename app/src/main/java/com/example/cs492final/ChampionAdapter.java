@@ -14,54 +14,71 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHolder> {
+public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ChampionViewHolder> {
     //champion data
     private List<ChampionWTags>championData;
-    private List<ChampionWTags> championWTags;
+    private OnChampionClickListener onChampionClickListener;
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    public interface OnChampionClickListener {
+        void onChampionClick(ChampionWTags champion);
+    }
+
+    public ChampionAdapter(OnChampionClickListener onChampionClickListener){
+        this.onChampionClickListener = onChampionClickListener;
+    }
+
+    @NonNull
+    @Override
+    public ChampionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View itemView = inflater.inflate(R.layout.champion_list_item, parent, false);
+        return new ChampionViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ChampionViewHolder holder, int position) {
+        holder.bind(championData.get(position));
+
+    }
+    public void updateChampionData(List<ChampionWTags> championWTags) {
+        this.championData = championWTags;
+        // update UI
+        notifyDataSetChanged();
+    }
+    @Override
+    public int getItemCount() {
+        if(this.championData == null) {
+            return 0;
+        } else {
+            return championData.size();
+        }
+    }
+
+    class ChampionViewHolder extends RecyclerView.ViewHolder{
         TextView champion_name;
         TextView champion_title;
         TextView champion_tag;
         TextView champion_image;
 
 
-        public ViewHolder(@NonNull View itemView) {
+        public ChampionViewHolder(@NonNull View itemView) {
             super(itemView);
             champion_name=itemView.findViewById(R.id.champion_name);
             champion_title=itemView.findViewById(R.id.champion_title);
             champion_tag=itemView.findViewById(R.id.champion_tag);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onChampionClickListener.onChampionClick(championData.get(getAdapterPosition()));
+                }
+            });
         }
-    }
-    public ChampionAdapter(List<ChampionWTags>championDataList){
-        championData=championDataList;
-    }
-    @NonNull
-    @Override
-    public ChampionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.champion_list_item,parent,false);
-        ViewHolder holder=new ViewHolder(view);
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ChampionAdapter.ViewHolder holder, int position) {
-        ChampionWTags championWTags = championData.get(position);
-        holder.champion_name.setText(championWTags.getName());
-        holder.champion_title.setText(championWTags.getTitle());
-        holder.champion_tag.setText(championWTags.getTags());
-    }
-    public void updateChampionData(List<ChampionWTags> championWTags) {
-        // sort data
-        Collections.reverse(championWTags);
-        this.championWTags = championWTags;
-        // update UI
-        notifyDataSetChanged();
-    }
-    @Override
-    public int getItemCount() {
-        return championData.size();
+        public void bind(ChampionWTags champion) {
+            champion_name.setText(champion.getName());
+            champion_title.setText(champion.getTitle());
+            champion_tag.setText(champion.getTags().toString());
+        }
     }
 }

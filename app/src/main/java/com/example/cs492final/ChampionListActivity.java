@@ -19,7 +19,7 @@ import com.example.cs492final.data.Champions;
 
 import java.util.List;
 
-public class ChampionListActivity extends AppCompatActivity implements List<ChampionWTags> {
+public class ChampionListActivity extends AppCompatActivity implements ChampionAdapter.OnChampionClickListener {
     private static final String TAG = ChampionListActivity.class.getSimpleName();
     public static final String EXTRA_TAG_TEXT = "ChampionListActivity.Tag";
     public static final String EXTRA_DIFFICULTY_TEXT = "ChampionListActivity.Difficulty";
@@ -48,10 +48,16 @@ public class ChampionListActivity extends AppCompatActivity implements List<Cham
                     this,
                     new ViewModelProvider.AndroidViewModelFactory(getApplication())
             ).get(DbChampionViewModel.class);
+            this.recyclerView = findViewById(R.id.champion_recycle);
+            this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            this.championAdapter = new ChampionAdapter(this);
+            this.recyclerView.setAdapter(this.championAdapter);
+
             this.tag = intent.getStringExtra(EXTRA_TAG_TEXT);
             this.difficulty = intent.getStringExtra(EXTRA_DIFFICULTY_TEXT);
             this.partype = intent.getStringExtra(EXTRA_PARTYPE_TEXT);
             getChampionsData();
+
         }
     }
 
@@ -81,14 +87,7 @@ public class ChampionListActivity extends AppCompatActivity implements List<Cham
                 Log.d(TAG, champion.getName() + " " + champion.getTags());
             }
         }
-        this.recyclerView = findViewById(R.id.champion_recycle);
-        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        this.championAdapter = new ChampionAdapter(this);
-        this.recyclerView.setAdapter(this.championAdapter);
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "champions.db").allowMainThreadQueries().build();
-        this.championAdapter.updateChampionData(new List<>(db.championDao().getAll()));
-        this.championAdapter.notifyDataSetChanged();
+        this.championAdapter.updateChampionData(this.championsData);
     }
 
     private void getAllChampionsOrderBy(String column) {
@@ -201,5 +200,12 @@ public class ChampionListActivity extends AppCompatActivity implements List<Cham
                     }
                 }
         );
+    }
+
+    @Override
+    public void onChampionClick(ChampionWTags champion) {
+        Intent intent = new Intent(this, ChampDetailActivity.class);
+        // Make sure to put extra before start activity
+        startActivity(intent);
     }
 }
