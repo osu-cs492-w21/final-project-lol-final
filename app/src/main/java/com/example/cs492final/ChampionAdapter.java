@@ -17,6 +17,7 @@ import java.util.List;
 public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHolder> {
     //champion data
     private List<ChampionWTags>championData;
+    private List<ChampionWTags> championWTags;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView champion_name;
@@ -52,7 +53,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         holder.champion_title.setText(ChampionWTags.getTitle());
         holder.champion_tag.setText(ChampionWTags.getTags());
     }
-    public void updateChampionData(ArrayList<ChampionWTags> championWTags) {
+    public void updateChampionData(List<ChampionWTags> championWTags) {
         // sort data
         Collections.reverse(championWTags);
         this.championWTags = championWTags;
