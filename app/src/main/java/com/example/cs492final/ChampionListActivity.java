@@ -71,7 +71,9 @@ public class ChampionListActivity extends AppCompatActivity {
 
     private void printChampsWithTags() {
         for(ChampionWTags champion : championsData) {
-            Log.d(TAG, champion.getName() + " " + champion.getTags());
+            if(champion!=null) {
+                Log.d(TAG, champion.getName() + " " + champion.getTags());
+            }
         }
     }
 
