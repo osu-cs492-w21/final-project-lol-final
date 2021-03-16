@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private SharedPreferences sharedPreferences;
     private View recyclerView;
     private ChampionAdapter championAdapter;
-
+    private RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         this.recyclerView.setAdapter(this.champion_recycle);
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "champions.db").allowMainThreadQueries().build();
-        this.championAdapter.updateCityData(new List<>(db.AppDatabase().getAll()));
+        this.championAdapter.updateChampionData(new List<>(db.championDao().getAll()));
         this.championAdapter.notifyDataSetChanged();
 
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);

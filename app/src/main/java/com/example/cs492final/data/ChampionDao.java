@@ -18,4 +18,6 @@ public interface ChampionDao {
 
     @Query("SELECT * FROM champions ORDER BY :sortBy DESC")
     LiveData<List<Champion>> getAllChampionsDesc(String sortBy);
+
+    Object getAll();
 }
