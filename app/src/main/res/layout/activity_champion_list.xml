@@ -6,4 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ChampionList">
 
+
+    <include layout="@layout/champion_list_item">
+
+    </include>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="16dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
