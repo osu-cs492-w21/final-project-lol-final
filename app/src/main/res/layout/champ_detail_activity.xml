@@ -22,6 +22,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/detail_name">
         </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_title">
+        </TextView>
 
         <TextView
             android:layout_width="match_parent"

@@ -27,7 +27,7 @@ public class ChampionListActivity extends AppCompatActivity {
         if(intent != null && intent.hasExtra(EXTRA_CHAMPIONS_DATA)) {
             this.championsData = (List<ChampionWTags>) intent.getSerializableExtra(EXTRA_CHAMPIONS_DATA);
             for(ChampionWTags champion : championsData) {
-                Log.d(TAG,champion.getName());
+//                Log.d("TAG",championsData.get(0).getName());
             }
         }
     }
