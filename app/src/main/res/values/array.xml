@@ -41,10 +41,16 @@
     </string-array>
 
     <string-array name="ordered_by_list_entries">
+        <item>NAME</item>
         <item>HP</item>
         <item>MP</item>
         <item>ARMOR</item>
         <item>SPELLBLOCK</item>
         <item>ATTACKDAMAGE</item>
+    </string-array>
+
+    <string-array name="ordering_entries">
+        <item>Ascending</item>
+        <item>Descending</item>
     </string-array>
 </resources>

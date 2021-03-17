@@ -1,8 +1,10 @@
 package com.example.cs492final.data;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.JsonObject;
@@ -20,7 +22,10 @@ public class Champion {
     private String partype;
     @Embedded
     private ChampionStats stats;
+    @ColumnInfo(name = "image_name")
+    private String imageName;
 
+    @Ignore
     public Champion() {
         this.name = null;
         this.title = null;
@@ -50,6 +55,7 @@ public class Champion {
         this.tag = tag;
         this.partype = json.getAsJsonPrimitive("partype").getAsString();
         this.stats = new ChampionStats(json.getAsJsonObject("stats"));
+        this.imageName = json.getAsJsonObject("image").getAsJsonPrimitive("full").getAsString();
     }
 
     public String getName() {
@@ -80,6 +86,10 @@ public class Champion {
         return stats;
     }
 
+    public String getImageName() {
+        return imageName;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -106,5 +116,9 @@ public class Champion {
 
     public void setStats(ChampionStats stats) {
         this.stats = stats;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }
