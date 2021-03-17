@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private ChampionAdapter championAdapter;
 
 
-    String orderby;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

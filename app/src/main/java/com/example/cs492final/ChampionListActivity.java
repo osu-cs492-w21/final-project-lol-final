@@ -1,5 +1,6 @@
 package com.example.cs492final;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,9 +12,12 @@ import androidx.room.Room;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -260,5 +264,29 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
         Intent intent = new Intent(this, ChampDetailActivity.class);
         intent.putExtra(ChampDetailActivity.EXTRA_CHAMPION_DATA, champion);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.google_intent,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.google_intent:
+                google_intent();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    void google_intent(){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://na.leagueoflegends.com"));
+        Intent browserChooserIntent = Intent.createChooser(browserIntent , "Choose browser of your choice");
+        startActivity(browserChooserIntent );
     }
 }
