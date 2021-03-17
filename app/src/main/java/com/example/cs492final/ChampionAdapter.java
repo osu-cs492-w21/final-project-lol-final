@@ -42,6 +42,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.Champi
     }
     public void updateChampionData(List<ChampionWTags> championWTags) {
         this.championData = championWTags;
+
         // update UI
         notifyDataSetChanged();
     }

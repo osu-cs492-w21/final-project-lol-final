@@ -47,4 +47,9 @@
         <item>SPELLBLOCK</item>
         <item>ATTACKDAMAGE</item>
     </string-array>
+
+    <string-array name="ordering_entries">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
 </resources>

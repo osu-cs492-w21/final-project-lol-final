@@ -20,4 +20,10 @@
     <string name="pref_ordered_by_key" translatable="false">ordered_key</string>
     <string name="pref_ordered_by_title">Ordered By</string>
     <string name="pref_ordered_default">HP</string>
+
+
+
+    <string name="pref_asc_dsc_key" translatable="false">asc_dsc_key</string>
+    <string name="pref_asc_dsc_title">Ordering</string>
+    <string name="pref_asc_dsc_default">Ascending</string>
 </resources>

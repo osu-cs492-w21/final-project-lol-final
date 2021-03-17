@@ -21,6 +21,8 @@ import com.example.cs492final.data.AppDatabase;
 import com.example.cs492final.data.ChampionWTags;
 import com.example.cs492final.data.Champions;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ChampionListActivity extends AppCompatActivity implements ChampionAdapter.OnChampionClickListener {
@@ -34,7 +36,7 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
     private String difficulty;
     private String partype;
     private String orderBy; // Add Sort by option to preference and make this string reflect that value instead of hard coding
-
+    private String ordering;
 
 
     private List<ChampionWTags> championsData;
@@ -52,6 +54,11 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
                 getString(R.string.pref_ordered_by_key),
                 getString(R.string.pref_ordered_default)
         );
+        ordering=preferences.getString(
+                getString(R.string.pref_asc_dsc_key),
+                getString(R.string.pref_asc_dsc_default)
+                );
+
         Log.d("ordered by is", orderBy);
 
 
@@ -105,9 +112,19 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
                 Log.d("Champs are", champion.getName() + " " + champion.getTags());
             }
         }
-        if(championsData != null && championsData.get(0) != null) {
-            this.championAdapter.updateChampionData(this.championsData);
+        if(ordering.equals("Ascending")){
+            if(championsData != null && championsData.get(0) != null) {
+                this.championAdapter.updateChampionData(this.championsData);
+            }
         }
+        else{
+            Collections.reverse(championsData);
+            if(championsData != null && championsData.get(0) != null) {
+                this.championAdapter.updateChampionData(this.championsData);
+            }
+        }
+
+
     }
 
     private void getAllChampionsOrderBy(String column) {
