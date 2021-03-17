@@ -14,7 +14,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.cs492final.data.Champion;
 import com.example.cs492final.data.AppDatabase;
@@ -38,6 +41,9 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
     private String orderBy; // Add Sort by option to preference and make this string reflect that value instead of hard coding
     private String ordering;
 
+    private ProgressBar loadingIndicatorPB;
+    private TextView errorMessageTV;
+
 
     private List<ChampionWTags> championsData;
     private DbChampionViewModel dbChampionViewModel;
@@ -58,6 +64,10 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
                 getString(R.string.pref_asc_dsc_key),
                 getString(R.string.pref_asc_dsc_default)
                 );
+
+        this.loadingIndicatorPB = findViewById(R.id.pb_loading_indicator);
+        this.errorMessageTV = findViewById(R.id.tv_error_message);
+
 
         Log.d("ordered by is", orderBy);
 
@@ -114,13 +124,19 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
         }
         if(ordering.equals("Ascending")){
             if(championsData != null && championsData.get(0) != null) {
+                errorMessageTV.setVisibility(View.INVISIBLE);
                 this.championAdapter.updateChampionData(this.championsData);
+            }else{
+                errorMessageTV.setVisibility(View.VISIBLE);
             }
         }
         else{
             Collections.reverse(championsData);
             if(championsData != null && championsData.get(0) != null) {
+                errorMessageTV.setVisibility(View.INVISIBLE);
                 this.championAdapter.updateChampionData(this.championsData);
+            }else{
+                errorMessageTV.setVisibility(View.VISIBLE);
             }
         }
 
