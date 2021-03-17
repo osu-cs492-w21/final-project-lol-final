@@ -58,7 +58,7 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
         Intent intent = getIntent();
 
         if(intent != null && intent.hasExtra(EXTRA_TAG_TEXT) && intent.hasExtra(EXTRA_DIFFICULTY_TEXT)
-            && intent.hasExtra(EXTRA_PARTYPE_TEXT)) {
+                && intent.hasExtra(EXTRA_PARTYPE_TEXT)) {
             this.dbChampionViewModel = new ViewModelProvider(
                     this,
                     new ViewModelProvider.AndroidViewModelFactory(getApplication())
@@ -105,7 +105,9 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
                 Log.d("Champs are", champion.getName() + " " + champion.getTags());
             }
         }
-        this.championAdapter.updateChampionData(this.championsData);
+        if(championsData != null && championsData.get(0) != null) {
+            this.championAdapter.updateChampionData(this.championsData);
+        }
     }
 
     private void getAllChampionsOrderBy(String column) {
