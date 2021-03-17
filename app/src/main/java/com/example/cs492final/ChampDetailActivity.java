@@ -2,8 +2,14 @@ package com.example.cs492final;
 
 import androidx.annotation.LongDef;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +22,10 @@ import com.example.cs492final.data.ChampionWTags;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +34,7 @@ public class ChampDetailActivity extends AppCompatActivity {
     public static final String EXTRA_CHAMPION_DATA = "Champions";
 
     private ChampionWTags champion;
+    private ImageView imageTV;
     private Toast infoToast;
 
     @Override
@@ -35,6 +46,9 @@ public class ChampDetailActivity extends AppCompatActivity {
         if(intent != null&&intent.hasExtra(EXTRA_CHAMPION_DATA)){
             this.champion = (ChampionWTags)intent.getSerializableExtra(EXTRA_CHAMPION_DATA);
             ChampionStats stats = champion.getStats();
+
+            // Grab Image View
+            this.imageTV = findViewById(R.id.detail_image);
 
             // Grab Text Views
             TextView nameTV = findViewById(R.id.detail_name);
@@ -53,6 +67,9 @@ public class ChampDetailActivity extends AppCompatActivity {
             TextView statAttackDamageTV = findViewById(R.id.detail_stat_attackdamage);
             TextView statAttackSpeedTV = findViewById(R.id.detail_stat_attackspeed);
             TextView statAttackRangeTV = findViewById(R.id.detail_stat_attackrange);
+
+            // Set champion image
+            new ImageFetchTask().execute();
 
             // Set generic text views
             nameTV.setText(champion.getName());
@@ -104,5 +121,42 @@ public class ChampDetailActivity extends AppCompatActivity {
         }
 
         return tags;
+    }
+
+    public class ImageFetchTask extends AsyncTask<Void, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(Void ... voids) {
+            String version = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .getString(getString(R.string.pref_version_key), "0");
+            String strUrl = "https://ddragon.leagueoflegends.com/cdn/" + version + "/img/champion/" + champion.getImageName();
+            URL url = null;
+            try {
+                url = new URL(strUrl);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            Bitmap bmp = null;
+            try {
+                assert url != null;
+                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "Fetching");
+            return bmp;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap image) {
+            super.onPostExecute(image);
+            if(imageTV == null) {
+                Log.d(TAG, "Ohno");
+            } else {
+                Log.d(TAG, "huh?");
+            }
+            imageTV.setImageBitmap(image);
+
+            Log.d(TAG, "Complete");
+        }
     }
 }

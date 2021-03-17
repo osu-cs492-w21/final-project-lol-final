@@ -1,5 +1,7 @@
 package com.example.cs492final.data;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,6 +13,8 @@ public class ChampionWTags implements Serializable {
     private ArrayList<String> tags;
     private String partype;
     private ChampionStats stats;
+    private String imageName;
+    private Bitmap image = null;
 
     public ChampionWTags() {
         this.name = null;
@@ -31,6 +35,7 @@ public class ChampionWTags implements Serializable {
         this.tags.add(champion.getTag());
         this.partype = champion.getPartype();
         this.stats = champion.getStats();
+        this.imageName = champion.getImageName();
     }
 
     public ChampionWTags(String name, String title, String blurb, ChampionInfo info, ArrayList<String> tags,
@@ -72,6 +77,14 @@ public class ChampionWTags implements Serializable {
         return stats;
     }
 
+    public String getImageName() {
+        return imageName;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -100,7 +113,13 @@ public class ChampionWTags implements Serializable {
         this.stats = stats;
     }
 
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
     public void addTag(String tag) {
         this.tags.add(tag);
     }
+
+    public void addImage(Bitmap bmp) { this.image = bmp; }
 }
