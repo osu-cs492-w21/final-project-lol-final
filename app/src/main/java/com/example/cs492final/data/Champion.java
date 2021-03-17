@@ -3,6 +3,7 @@ package com.example.cs492final.data;
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.JsonObject;
@@ -21,6 +22,7 @@ public class Champion {
     @Embedded
     private ChampionStats stats;
 
+    @Ignore
     public Champion() {
         this.name = null;
         this.title = null;

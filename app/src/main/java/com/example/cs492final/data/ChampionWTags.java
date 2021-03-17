@@ -1,11 +1,5 @@
 package com.example.cs492final.data;
 
-import androidx.annotation.NonNull;
-import androidx.room.Embedded;
-import androidx.room.Entity;
-
-import com.google.gson.JsonObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 

@@ -5,19 +5,25 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.room.Room;
+import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.example.cs492final.data.Champion;
+import com.example.cs492final.data.AppDatabase;
 import com.example.cs492final.data.ChampionWTags;
 import com.example.cs492final.data.Champions;
 
 import java.util.List;
 
-public class ChampionListActivity extends AppCompatActivity {
+public class ChampionListActivity extends AppCompatActivity implements ChampionAdapter.OnChampionClickListener {
     private static final String TAG = ChampionListActivity.class.getSimpleName();
     public static final String EXTRA_TAG_TEXT = "ChampionListActivity.Tag";
     public static final String EXTRA_DIFFICULTY_TEXT = "ChampionListActivity.Difficulty";
@@ -32,9 +38,10 @@ public class ChampionListActivity extends AppCompatActivity {
 
 
     private List<ChampionWTags> championsData;
-
     private DbChampionViewModel dbChampionViewModel;
 
+    private RecyclerView recyclerView;
+    private ChampionAdapter championAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +63,15 @@ public class ChampionListActivity extends AppCompatActivity {
                     this,
                     new ViewModelProvider.AndroidViewModelFactory(getApplication())
             ).get(DbChampionViewModel.class);
+            this.recyclerView = findViewById(R.id.champion_recycle);
+            this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            this.championAdapter = new ChampionAdapter(this);
+            this.recyclerView.setAdapter(this.championAdapter);
+
             this.tag = intent.getStringExtra(EXTRA_TAG_TEXT);
             this.difficulty = intent.getStringExtra(EXTRA_DIFFICULTY_TEXT);
             this.partype = intent.getStringExtra(EXTRA_PARTYPE_TEXT);
+
             getChampionsData(orderBy);
         }
 
@@ -92,6 +105,7 @@ public class ChampionListActivity extends AppCompatActivity {
                 Log.d("Champs are", champion.getName() + " " + champion.getTags());
             }
         }
+        this.championAdapter.updateChampionData(this.championsData);
     }
 
     private void getAllChampionsOrderBy(String column) {
@@ -206,6 +220,10 @@ public class ChampionListActivity extends AppCompatActivity {
         );
     }
 
-
-
+    @Override
+    public void onChampionClick(ChampionWTags champion) {
+        Intent intent = new Intent(this, ChampDetailActivity.class);
+        intent.putExtra(ChampDetailActivity.EXTRA_CHAMPION_DATA, champion);
+        startActivity(intent);
+    }
 }
