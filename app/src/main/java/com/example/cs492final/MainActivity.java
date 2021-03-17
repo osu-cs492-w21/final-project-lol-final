@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private View recyclerView;
     private ChampionAdapter championAdapter;
 
+
+    String orderby;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +128,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
         );
 
+
+
+
         Button searchButton = (Button)findViewById(R.id.btn_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +145,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 startActivity(intent);
             }
         });
+
+
+
+
+
+
     }
 
     @Override
@@ -165,5 +177,23 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             String version = sharedPreferences.getString(key, "0");
             championsViewModel.loadChampions(version);
         }
+
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

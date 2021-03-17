@@ -17,4 +17,7 @@
     <!-- Strings for units preference -->
     <string name="pref_version_key" translatable="false">pref_version</string>
     <string name="pref_version_title">Patch</string>
+    <string name="pref_ordered_by_key" translatable="false">ordered_key</string>
+    <string name="pref_ordered_by_title">Ordered By</string>
+    <string name="pref_ordered_default">HP</string>
 </resources>

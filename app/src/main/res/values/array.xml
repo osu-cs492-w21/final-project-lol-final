@@ -39,4 +39,12 @@
         <item>Rage</item>
         <item>Shield</item>
     </string-array>
+
+    <string-array name="ordered_by_list_entries">
+        <item>HP</item>
+        <item>MP</item>
+        <item>ARMOR</item>
+        <item>SPELLBLOCK</item>
+        <item>ATTACKDAMAGE</item>
+    </string-array>
 </resources>
