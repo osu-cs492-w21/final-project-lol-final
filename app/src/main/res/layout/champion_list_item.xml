@@ -16,21 +16,21 @@
             <TextView
                 android:id="@+id/champion_name"
                 android:layout_width="100dp"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:paddingLeft="10dp"
                 android:text="@string/champion_name" />
 
             <TextView
                 android:id="@+id/champion_title"
                 android:layout_width="100dp"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:paddingLeft="10dp"
                 android:text="@string/champion_title" />
 
             <TextView
                 android:id="@+id/champion_tag"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:paddingLeft="10dp"
                 android:text="@string/champion_tag" />
 

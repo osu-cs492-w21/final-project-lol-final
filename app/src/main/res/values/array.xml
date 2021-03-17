@@ -41,6 +41,7 @@
     </string-array>
 
     <string-array name="ordered_by_list_entries">
+        <item>NAME</item>
         <item>HP</item>
         <item>MP</item>
         <item>ARMOR</item>
