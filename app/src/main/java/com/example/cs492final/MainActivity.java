@@ -11,6 +11,8 @@ import androidx.room.Room;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -23,7 +25,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.Spinner;
+import android.widget.VideoView;
 
 import com.example.cs492final.data.AppDatabase;
 import com.example.cs492final.data.Champion;
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private SharedPreferences sharedPreferences;
     private View recyclerView;
     private ChampionAdapter championAdapter;
+    private VideoView videoView;
 
 
 
@@ -146,10 +151,31 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         });
 
 
+        videoView = findViewById(R.id.video_VV);
+        String path = "android.resource://" + getPackageName() + "/" + R.raw.league_of_legends_cinema;
+        Uri uri = Uri.parse(path);
+        videoView.setVideoURI(uri);
 
+        videoView.start();
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
+    }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "start");
+        videoView.start();
     }
 
     @Override
