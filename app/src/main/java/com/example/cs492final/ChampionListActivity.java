@@ -286,7 +286,7 @@ public class ChampionListActivity extends AppCompatActivity implements ChampionA
 
     void google_intent(){
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://na.leagueoflegends.com"));
-        Intent browserChooserIntent = Intent.createChooser(browserIntent , "Choose browser of your choice");
-        startActivity(browserChooserIntent );
+        Intent intent = Intent.createChooser(browserIntent , "Choose browser");
+        startActivity(intent);
     }
 }
